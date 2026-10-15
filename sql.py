@@ -1,26 +1,6 @@
-import sqlite3
+"""Optional CLI bootstrap. Safe to run repeatedly: never overwrites existing data."""
+from db_manager import DB_PATH, initialize_if_needed
 
-connection = sqlite3.connect("data.db")
-
-cursor = connection.cursor()
-
-table='''CREATE TABLE Students(name VARCHAR(30), class VARCHAR(10), marks INT, company VARCHAR(30))'''
-
-
-
-cursor.execute(table)
-
-cursor.execute('''insert into Students values('Sijo', 'BTech', 75, 'JSW')''')
-cursor.execute('''insert into Students values('Lijo', 'MTech', 69, 'TCS')''')
-cursor.execute('''insert into Students values('Rijo', 'BSc', 79, 'WIPRO')''')
-cursor.execute('''insert into Students values('Sibin', 'MSc', 89, 'INFOSYS')''')
-cursor.execute('''insert into Students values('Dilsha', 'MCom', 99, 'Cyient')''')
-
-print("the inserted records-")
-df = cursor.execute('''select * from students''')
-
-for row in df:
-    print(row)
-
-connection.commit()
-connection.close()
+if __name__ == "__main__":
+    result = initialize_if_needed(DB_PATH)
+    print(result.status, "-", result.message)
